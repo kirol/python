@@ -1,0 +1,9 @@
+Each character in a string is assigned a number. This number is called the index. Check out the diagram in the editor.
+
+c = "cats"[0]
+n = "Ryan"[3]
+
+    In the above example, we create a new variable called c and set it to "c", the character at index zero of the string "cats".
+    Next, we create a new variable called n and set it to "n", the character at index three of the string "Ryan".
+
+In Python, we start counting the index from zero instead of one.
