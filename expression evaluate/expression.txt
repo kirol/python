@@ -1,0 +1,24 @@
+Entering Expressions into the Interactive Shell
+
+You run the interactive shell by launching IDLE, which you installed with Python in the introduction. On Windows, open the Start menu, select All Programs ▸ Python 3.3, and then select IDLE (Python GUI). On OS X, select Applications ▸ MacPython 3.3 ▸ IDLE. On Ubuntu, open a new Terminal window and enter idle3.
+
+A window with the >>> prompt should appear; that’s the interactive shell. Enter 2 + 2 at the prompt to have Python do some simple math.
+
+>>> 2 + 2
+4
+
+The IDLE window should now show some text like this:
+
+Python 3.3.2 (v3.3.2:d047928ae3f6, May 16 2013, 00:06:53) [MSC v.1600 64 bit
+(AMD64)] on win32
+Type "copyright", "credits" or "license()" for more information.
+>>> 2 + 2
+4
+>>>
+
+In Python, 2 + 2 is called an expression, which is the most basic kind of programming instruction in the language. Expressions consist of values (such as 2) and operators (such as +), and they can always evaluate (that is, reduce) down to a single value. That means you can use expressions anywhere in Python code that you could also use a value.
+
+In the previous example, 2 + 2 is evaluated down to a single value, 4. A single value with no operators is also considered an expression, though it evaluates only to itself, as shown here:
+
+>>> 2
+2
