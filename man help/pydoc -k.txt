@@ -1,0 +1,5 @@
+Is there any way to search for a particular package/function using keywords in the Python console?
+For example, I may want to search "pdf" for pdf related tasks.
+
+[root@localhost assess]# pydoc -k fileinput
+fileinput - Helper class to quickly write a loop over all standard input files.
