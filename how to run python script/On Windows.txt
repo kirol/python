@@ -1,0 +1,1 @@
+Open IDLE Python > Open Python script > F5 (Do not run Python script by clicking directly on it without going through IDLE Python)
