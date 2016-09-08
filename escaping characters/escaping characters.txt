@@ -1,3 +1,7 @@
+Backslash is the strongest quoting
+' ' is the second strongest quoting
+" " is the weakest quoting
+
 
 Escaping characters
 
