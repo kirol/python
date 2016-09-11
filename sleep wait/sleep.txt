@@ -1,0 +1,12 @@
+
+
+import time
+time.sleep(5) # delays for 5 seconds
+
+Here is another example where something is run once a minute:
+
+import time 
+while True:
+    print "This prints once a minute."
+    time.sleep(60)  # Delay for 1 minute (60 seconds)
+

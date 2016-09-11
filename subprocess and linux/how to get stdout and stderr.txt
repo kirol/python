@@ -1,0 +1,20 @@
+def main(sysArgs):
+        input = raw_input("Input the location of hdd's json file (e.g: /home/minhql/mymy): ")
+        print(input)
+        while True:
+                proc = subprocess.Popen(['sshpass -p gcsvn123 scp minhql@192.168.100.102:' + input + ' .'] \
+                ,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+                procOutput, procError = proc.communicate()
+                if proc.returncode != 0:
+                        print('Error')
+                        print(procError)
+                        time.sleep(1)
+						continue
+                else:
+                        print("Downloaded")
+                        break
+
+
+				
+				
+proc.communicate() includes both stdout=subprocess.PIPE,stderr=subprocess.PIPE

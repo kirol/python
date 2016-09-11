@@ -7,6 +7,7 @@ import argparse
 import signal
 import fileinput
 
+# Handle signal (e.g: Ctrl + C) 
 def handler(signalnum, frame):
 	print("\n")	
 	sys.exit(0)
@@ -54,6 +55,7 @@ def initFile(initF=None):
 			i = i + 1
 			fo.write(str(i) + '|' + 'TestName' + str(i) + '|' + 'TestAddress' + str(i) + '\n')		
 
+# using default sed command on Linux to replace text
 def replaceText():
 	createdFile = os.getcwd() + "/file.txt"
 	subprocess.call(["sed -i 's/2/4/2' " + createdFile], shell=True)
