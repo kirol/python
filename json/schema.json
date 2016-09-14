@@ -1,0 +1,72 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "CreationTime": {
+      "type": "string"
+    },
+    "DriveIdentify": {
+      "type": "object",
+      "properties": {
+        "Manufacturer": {
+          "type": "string"
+        },
+        "ModelId": {
+          "type": "string"
+        },
+        "Serial": {
+          "type": "string"
+        },
+        "Firmware": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "Manufacturer",
+        "ModelId",
+        "Serial",
+        "Firmware"
+      ]
+    },
+    "SmartData": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "value": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "value"
+        ]
+      }
+    },
+    "VendorData": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "VendorId": {
+            "type": "string"
+          },
+          "Data": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "VendorId",
+          "Data"
+        ]
+      }
+    }
+  },
+  "required": [
+    "CreationTime",
+    "DriveIdentify"
+  ]
+}
