@@ -1,0 +1,3 @@
+load() loads JSON from a file or file-like object
+
+loads() loads JSON from a given string or unicode object

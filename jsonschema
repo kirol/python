@@ -1,0 +1,97 @@
+#!/usr/bin/python
+
+import sys
+import json
+import jsonschema
+
+schema = \
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "CreationTime": {
+      "type": "string"
+    },
+    "DriveIdentify": {
+      "type": "object",
+      "properties": {
+        "Manufacture": {
+          "type": "string"
+        },
+        "ModelId": {
+          "type": "string"
+        },
+        "Serial": {
+          "type": "string"
+        },
+        "Firmware": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "Manufacture",
+        "ModelId",
+        "Serial",
+        "Firmware"
+      ]
+    },
+    "SmartData": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "value": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "value"
+        ]
+      }
+    },
+    "VendorData": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "VendorId": {
+            "type": "string"
+          },
+          "Data": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "VendorId",
+          "Data"
+        ]
+      }
+    }
+  },
+  "required": [
+    "CreationTime",
+    "DriveIdentify",
+    "SmartData",
+    "VendorData"
+  ]
+}
+
+# Read data from payload.json
+with open('payload.json', 'r') as pj:
+	data = json.load(pj)
+
+
+print(json.dumps(data, indent=4))
+
+for idx, item in enumerate(data):
+    try:
+        jsonschema.validate(item, schema)
+        sys.stdout.write("OK\n\n".format(idx))
+    except jsonschema.exceptions.ValidationError as ve:
+	sys.stderr.write("###############################\n")
+        sys.stderr.write("ERROR\n\n".format(idx))
+        sys.stderr.write(str(ve) + "\n")
