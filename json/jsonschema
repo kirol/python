@@ -4,22 +4,37 @@ import sys
 import json
 import simplejson
 import jsonschema
+import argparse
 
+def validateSchema():
+	schema = open("schema.json").read()
 
-schema = open("schema.json").read()
+	# Read data from payload.json
+	data = open("payload.json.bk").read()
 
-# Read data from payload.json
-data = open("payload.json.bk").read()
+	try:
+		jsonschema.validate(simplejson.loads(data), simplejson.loads(schema))
+	except jsonschema.ValidationError as e:
+		print e.message
 
-print(json.dumps(data, indent=4))
+def transferFile():
+	input = raw_input("Input STB's ip address: ")
+	proc = subprocess.Popen(['sshpass -p gcsvn123 scp minhql@' + input)
+	if proc.returncode != 0:
+		print(procError)
+	else:
+		print("Downloaded" )
 
+def main(sysArgs):
+	parser = argparse.ArgumentParser()
+	parser.add_argument("-vs","--validateS",action="store_true",help="Validate payload.json against the schema")
+	parser.add_argument("-vv","--validateV",action="store_true",help="Validate the values in payload.json against Vendor and Smart files")
+	args = parser.parse_args()
+	
+	if args.validateS:
+		validateSchema()
+	else:
+		print("Using --help or -h option for more info")
 
-jsonschema.validate(simplejson.loads(data), simplejson.loads(schema))
-
-'''
-try:
-	jsonschema.validate(json.loads(data), json.loads(schema))
-except jsonschema.exceptions.ValidationError as ve:
-	sys.stderr.write("###############################\n")
-        sys.stderr.write(str(ve) + "\n")
-'''
+if __name__ == '__main__':
+	main(sys.argv)
