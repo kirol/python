@@ -1,0 +1,1 @@
+http://sacharya.com/validating-json-using-python-jsonschema/

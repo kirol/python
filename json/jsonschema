@@ -5,34 +5,63 @@ import json
 import simplejson
 import jsonschema
 import argparse
+import subprocess
 
 def validateSchema():
-	schema = open("schema.json").read()
+	# Read data from schema.json
+	with open("schema.json") as schemaFile:
+		schema = schemaFile.read()
 
 	# Read data from payload.json
-	data = open("payload.json.bk").read()
+	with open("ums") as dataFile:
+		data = dataFile.read()
 
 	try:
 		jsonschema.validate(simplejson.loads(data), simplejson.loads(schema))
+		print("Successful")
 	except jsonschema.ValidationError as e:
 		print e.message
 
-def transferFile():
-	input = raw_input("Input STB's ip address: ")
-	proc = subprocess.Popen(['sshpass -p gcsvn123 scp minhql@' + input)
+def transferFile(file):
+	path = 'sshpass -p "gcsvn123" scp minhql@' + ip + ':/' + file + ' .'
+	print(path)
+	proc = subprocess.Popen(path,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+	procOutput, procError = proc.communicate()
 	if proc.returncode != 0:
 		print(procError)
 	else:
-		print("Downloaded" )
+		print("Downloaded")
+
+def parseUMS():
+	command = r"""grep $(grep 'CreationTime' payload.json | cut -d '"' -f4) abc.txt | cut -f 11- -d ':' | tr -d '\' 2> /dev/null | rev | cut -d '}' -f 2- | rev > umsFile"""
+	subprocess.Popen(command,shell=True)
+	print("The contents uploaded to UMS server\n")
+	with open("umsFile") as f:
+		print f.read()
+
+def compareWithFiles():
+	global ip
+	ip = raw_input("Input STB's ip address: ")
+	transferFile('file1')
+	transferFile('file2')
 
 def main(sysArgs):
 	parser = argparse.ArgumentParser()
 	parser.add_argument("-vs","--validateS",action="store_true",help="Validate payload.json against the schema")
-	parser.add_argument("-vv","--validateV",action="store_true",help="Validate the values in payload.json against Vendor and Smart files")
+	parser.add_argument("-cwf","--compareWithFiles",action="store_true",help="Compare the values in payload.json with Vendor and Smart files")
+	parser.add_argument("-cwu","--compareWithUMS",action="store_true",help="Compare the values in payload.json with the contents UMS receives")
+	parser.add_argument("-pu","--parseUMS",action="store_true",help="Parse UMS")
 	args = parser.parse_args()
 	
 	if args.validateS:
 		validateSchema()
+		return 0
+	elif args.parseUMS:
+		parseUMS()
+		return 0
+	elif args.compareWithFiles:
+		compareWithFiles()
+		return 0
 	else:
 		print("Using --help or -h option for more info")
 
