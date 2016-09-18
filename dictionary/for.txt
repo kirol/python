@@ -1,0 +1,7 @@
+
+
+If you want to iterate over both keys and values of the dictionary, do this:
+
+for key, value in data.items():
+    print key, value
+
