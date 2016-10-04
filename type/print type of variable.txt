@@ -1,0 +1,9 @@
+with open('payload.json') as file:
+        abc = file.read()
+
+print(type(abc))
+
+
+
+
+=> <type 'str'>

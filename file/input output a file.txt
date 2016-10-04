@@ -1,0 +1,17 @@
+
+
+
+implicit close (new 2.5+ style)
+
+
+with open('bar.txt') as fin:
+	for line in fin:
+	
+	
+	
+	
+	
+	
+Read file object as string in python	
+with open('payload.json') as file:
+	abc = file.read()

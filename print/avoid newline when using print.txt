@@ -1,0 +1,1 @@
+In Python 2.x just put a , at the end of your print statement. If you want to avoid the blank space that print puts between items, use sys.stdout.write.

@@ -1,0 +1,9 @@
+#!/usr/bin/python
+
+import re
+
+with open('payload.json') as file:
+        abc = file.read()
+
+line = re.sub('value', 'bem' ,abc.rstrip())
+print(line)

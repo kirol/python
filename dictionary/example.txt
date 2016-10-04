@@ -1,0 +1,8 @@
+dict = {"name":"matt","cash":5.45}
+for key in dict.keys():
+    print(key)
+for value in dict.values():
+    print(value)
+for key, value in dict.items():
+    print(key)
+    print(value)
