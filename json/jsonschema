@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import sys
+import os.path
 import json
 import simplejson
 import jsonschema
@@ -13,17 +14,18 @@ def validateSchema():
 		schema = schemaFile.read()
 
 	# Read data from payload.json
-	with open("ums") as dataFile:
+	with open("payload.json") as dataFile:
 		data = dataFile.read()
 
 	try:
 		jsonschema.validate(simplejson.loads(data), simplejson.loads(schema))
-		print("Successful")
+		print("Passed")
 	except jsonschema.ValidationError as e:
+		print("Failed")
 		print e.message
 
 def transferFile(file):
-	path = 'sshpass -p "gcsvn123" scp minhql@' + ip + ':/' + file + ' .'
+	path = 'sshpass -p ' + password + ' scp root@' + ip + ':' + file + ' .'
 	print(path)
 	proc = subprocess.Popen(path,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 	procOutput, procError = proc.communicate()
@@ -32,35 +34,93 @@ def transferFile(file):
 	else:
 		print("Downloaded")
 
-def parseUMS():
-	command = r"""grep $(grep 'CreationTime' payload.json | cut -d '"' -f4) abc.txt | cut -f 11- -d ':' | tr -d '\' 2> /dev/null | rev | cut -d '}' -f 2- | rev > umsFile"""
-	subprocess.Popen(command,shell=True)
-	print("The contents uploaded to UMS server\n")
-	with open("umsFile") as f:
-		print f.read()
+def smartPayload():
+	command = r"""echo $(cat payload.json) | sed -r 's/(.*)SmartData(.*)} ](.*)/\2/' | sed -e 's/ //g;s/},{/\n/g;s/"id"://g; s/,"value":"/=/g;s/"//g;s/}],//g;s/:\[{//g' | sort > clone;tr -d < smart.dat '\40'| sort > original; diff original clone"""
+	proc = subprocess.Popen(command,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+	procOutput, procError = proc.communicate()
+	if proc.returncode != 0:
+		print("\nFailed")
+		command1 = r"""echo -e "\nThe default values in smart.dat file: \n" >> jsonschema.log; comm -32 original clone >> jsonschema.log"""
+		proc1 = subprocess.Popen(command1,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+		proc1Output, proc1Error = proc1.communicate()
+		command2= r"""echo -e "\nThe incorect values in payload.json file: \n" >> jsonschema.log; comm -31 original clone >> jsonschema.log"""
+		proc2 = subprocess.Popen(command2,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+		proc2Output, proc2Error = proc2.communicate()
+	else:
+		print("Passed")
+		command3 = r"""shopt -s extglob; mv -f !(jsonschema|schema.json|setup_certs.sh) /tmp/"""       # move all tmp files to tmp folder
+		proc3 = subprocess.Popen(command,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+		proc3Output, proc3Error = proc3.communicate()
 
-def compareWithFiles():
-	global ip
-	ip = raw_input("Input STB's ip address: ")
-	transferFile('file1')
-	transferFile('file2')
+def vendorPayload():
+	command1 = """echo $(cat payload.json) | sed -r 's/(.*)VendorData(.*)VendorId(.*)/\2/' | sed -r 's/(.*)"Data" : "(.*)" (.*)/\2/' | sed 's/\\n//g' > ifhmTmp | echo $(cat abc) | base64 -d | gunzip > ifhmVendor; diff ifhmVendor hddVendorData.ifhm"""
+	proc1 = subprocess.Popen(command1,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+	proc1Output, proc1Error = proc1.communicate()
+	if proc1.returncode != 0:
+		print(proc1Error)
+	else:
+		print("\nPassed")
+
+def transferFiles():
+	transferFile('/var/viewer/hddVendorData*')
+	transferFile('/var/viewer/smart.dat')
+	transferFile('/var/bob/payloads/hddhealthmonitoring/payload.json')
+
+def preCondition():
+	umsIp = raw_input("Input UMS's ip: ")
+	command1 = r"""sshpass -p %s ssh root@%s 'echo ""%s ums.dtvce.com"" >> /etc/hosts; dt xc -action startAsAcquisition'; sshpass -p %s scp setup_certs.sh root@%s:/var/viewer/""" % (password,ip,umsIp,password,ip)
+	print(command1)
+	proc1 = subprocess.Popen(command1, shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+	proc1Output, proc1Error = proc1.communicate()
+	command2 = r"""sshpass -p %s ssh root@%s 'chmod 777 /var/viewer/setup_certs.sh; while true; do /var/viewer/setup_certs.sh; sleep 60; done'""" % (password,ip)
+	proc2 = subprocess.Popen(command2, shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+	command3 = r"""sshpass -p %s ssh root@%s 'dt setIdleTimeout -secs 1; dt hddhm -voWd on -voSea on'""" % (password,ip)
+	proc3 = subprocess.Popen(command3, shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+	proc3Output, proc3Error = proc3.communicate()
+
 
 def main(sysArgs):
 	parser = argparse.ArgumentParser()
-	parser.add_argument("-vs","--validateS",action="store_true",help="Validate payload.json against the schema")
+	parser.add_argument("-a","--all",action="store_true",help="Auto all")
 	parser.add_argument("-cwf","--compareWithFiles",action="store_true",help="Compare the values in payload.json with Vendor and Smart files")
 	parser.add_argument("-cwu","--compareWithUMS",action="store_true",help="Compare the values in payload.json with the contents UMS receives")
-	parser.add_argument("-pu","--parseUMS",action="store_true",help="Parse UMS")
 	args = parser.parse_args()
 	
-	if args.validateS:
-		validateSchema()
-		return 0
-	elif args.parseUMS:
-		parseUMS()
-		return 0
+	if args.all:
+		global password
+		global ip
+		ip = raw_input("Input STB's ip: ")
+        	password = raw_input("Input STB's password: ")
+		preCondition()
+		command1 = r"""sshpass -p """ + password + r""" ssh root@""" + ip + r""" 'tail -F /var/log/messages.log' | grep --line-buffered 'start running' | while read line; do echo $line | grep --line-buffered 'DiskMaintenance'; if [ $? -eq 0 ]; then sleep 600; killall sshpass; else sshpass -p """ + password + r""" ssh root@""" + ip + r""" "echo "keycode 670" >> /var/viewer/keyc.tmp; dt keyPress -f /var/viewer/keyc.tmp"; fi; done"""
+		print(command1)
+		proc1 = subprocess.Popen(command1,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+		proc1Output, proc1Error = proc1.communicate()
+		transferFiles()
+		command2 = r"""sshpass -p """ + password + r""" ssh root@""" + ip + r""" 'tail -F /var/log/messages.log' | grep --line-buffered 'start running' | while read line; do echo $line | grep --line-buffered 'HddHealthMaintenanceTask'; if [ $? -eq 0 ]; then sleep 60; killall sshpass; else sshpass -p """ + password + r""" ssh root@""" + ip + r""" "echo "keycode 670" >> /var/viewer/keyc.tmp; dt keyPress -f /var/viewer/keyc.tmp"; fi; done"""
+		proc2 = subprocess.Popen(command2,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+		proc2Output, proc2Error = proc2.communicate()
+		transferFiles()	
+		if (os.path.isfile("smart.dat") and os.path.isfile("payload.json")) is True:
+			print("\n================Validate payload.json file 's schema==================")
+			validateSchema()
+			print("\n================Validate payload.json file 's VENDOR data==================")
+			vendorPayload()
+			print("\n================Validate payload.json file 's SMART data==================")
+			smartPayload()
+		else:
+			print("\nStill waiting")
 	elif args.compareWithFiles:
-		compareWithFiles()
+		transferFiles()
+		if (os.path.isfile("smart.dat") and os.path.isfile("payload.json")) is True:
+			print("\n================Validate payload.json file 's schema==================")
+			validateSchema()
+			print("\n================Validate payload.json file 's VENDOR data==================")
+			vendorPayload()
+			print("\n================Validate payload.json file 's SMART data==================")
+			smartPayload()
+		else:
+			print("\nStill waiting")
 		return 0
 	else:
 		print("Using --help or -h option for more info")
