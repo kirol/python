@@ -1,0 +1,25 @@
+#!/usr/bin/python
+
+import re
+import sys
+
+with open('payload.json') as file1:
+	payloadFile = file1.read()
+
+pid = re.findall('"id" : (.*),', payloadFile)  # create a list of ids from payload.json
+pvalue = re.findall('"value" : "(.*)"',payloadFile) # create a list of values from payload.json
+pdict = dict(zip(pid,pvalue)) # combine above lists into a dictionary
+for key, value in pdict.items():
+	print key, value
+
+with open('smart.dat') as file2:
+	smartFile = file2.read().strip()
+sid = re.findall(' *(.*)=',smartFile) # create a lists of ids from smart.dat
+svalue = re.findall('=(.*)',smartFile) # create a lists of values from smart.dat
+sdict = dict(zip(sid, svalue)) # combine above lists
+print(sdict)
+if pdict == sdict:
+	print("True")
+else:
+	print("False")	
+#sys.stdout.write(found)
