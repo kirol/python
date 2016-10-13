@@ -1,0 +1,1 @@
+smartDict[k.strip()] = v.strip()
