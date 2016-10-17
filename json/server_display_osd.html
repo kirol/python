@@ -1,0 +1,64 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1"></head><body>
+
+<h4>SHEF Form Example</h4>
+
+<!-- The data encoding type, enctype, MUST be specified as below -->
+<form enctype="multipart/form-data" action="http://192.168.11.2:8080/info/displayOSD?callback=jsonp" method="POST">
+
+<table border="1" cellpadding="5" cellspacing="0">
+<tbody><tr>
+<td>Text</td><td><input size="20" maxlength="256" name="text" value="Jenny's Alert" type="text"></td>
+<td>Title</td><td><input value="Doorbell rang" size="20" maxlength="256" name="title" type="text"></td>
+<td>Timeout</td><td><input value="120" size="20" maxlength="256" name="timeout" type="text"></td>
+
+<td>Show Counter</td>
+<td>
+<select name="showCounter" size="2" multiple="multiple">
+<option selected="selected" value="true">True</option>
+<option value="false">False</option>
+</select>
+</td>
+
+</tr>
+<tr>
+<td>Button Label 1</td><td><input value="Launch DLife" size="20" maxlength="256" name="buttonLabel1" type="text"></td>
+<td>Button URL 1</td><td><input size="20" maxlength="256" name="buttonURL1" type="text"></td>
+</tr>
+<tr>
+<td>Button Label 2</td><td><input value="Cancel" size="20" maxlength="256" name="buttonLabel2" type="text"></td>
+<td>Button URL 2</td><td><input size="20" maxlength="256" name="buttonURL2" type="text"></td>
+</tr>
+<tr>
+<td>Button Label 3</td><td><input size="20" maxlength="256" name="buttonLabel3" type="text"></td>
+<td>Button URL 3</td><td><input size="20" maxlength="256" name="buttonURL3" type="text"></td>
+</tr>
+<tr>
+<td>Button Label 4</td><td><input size="20" maxlength="256" name="buttonLabel4" type="text"></td>
+<td>Button URL 4</td><td><input size="20" maxlength="256" name="buttonURL4" type="text"></td>
+</tr>
+<tr>
+<td>Button Label 5</td><td><input size="20" maxlength="256" name="buttonLabel5" type="text"></td>
+<td>Button URL 5</td><td><input size="20" maxlength="256" name="buttonURL5" type="text"></td>
+</tr>
+<tr>
+<td>Image File</td><td><input name="image" type="file"></td>
+</tr>
+
+<tr>
+
+</tr>
+
+<tr>
+<td><input value="Submit" type="submit"></td>
+<td>&nbsp;</td>
+</tr>
+</tbody></table>
+
+</form>
+
+
+
+
+
+</body></html>
