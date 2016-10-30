@@ -1,6 +1,15 @@
 import os
 import subprocess
 
+def myprocess(data):
+    proc = subprocess.Popen(data,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    procOutput, procError = proc.communicate()
+    print("")
+    print(procOutput)
+    print(procError)
+    print("")
+    return proc.returncode
+
 defaultPath = 'G:\GitHub'
 fileOrFiles = input('all or one: ')
 if fileOrFiles == 'one':
@@ -14,22 +23,18 @@ while True:
     if condition == 'pull':
         for fileName in myFiles:
             currentDir = os.chdir(os.path.join(defaultPath,fileName))
-            subprocess.Popen(['cmd','/K','git pull origin master'])
-        continue
-    elif condition == 'add':
-        for fileName in myFiles:
-            currentDir = os.chdir(os.path.join(defaultPath,fileName))
-            subprocess.Popen(['cmd','/K','git add *'])
-        continue
-    elif condition == 'commit':
-        for fileName in myFiles:
-            currentDir = os.chdir(os.path.join(defaultPath,fileName))
-            subprocess.Popen(['cmd','/K','git commit -m abc'])
+            pullCmd = r"""cmd /K git pull origin master"""
+            myprocess(pullCmd)
         continue
     elif condition == 'push':
         for fileName in myFiles:
             currentDir = os.chdir(os.path.join(defaultPath,fileName))
-            subprocess.Popen(['cmd','/K','git push origin master'])
+            addCmd = r"""cmd /K git add *"""
+            if myprocess(addCmd) == 0:
+                commitCmd = r"""cmd /K git commit -m 'abc'"""
+                if myprocess(commitCmd) == 0:
+                    pushCmd = r"""cmd /K git push origin master"""
+                    myprocess(pushCmd)
         continue
     elif condition == 'exit':
         break
