@@ -1,0 +1,29 @@
+http://stackoverflow.com/questions/3122145/zlib-error-error-3-while-decompressing-incorrect-header-check
+
+
+
+=================================================Decode base64 then decompress gzip (this one is working)=================================================
+zlib.decompress(base64.decodestring(data),zlib.MAX_WBITS|32)
+
+automatic header detection (zlib or gzip): adding 32 to windowBits will trigger header detection
+
+=================================================Compress gzip then encode base64 (not test yet)=================================================
+with open(data,"rb") as f:
+		bytes = f.read()
+		base64.encodestring(zlib.compress(bytes, ,zlib.MAX_WBITS|32))
+
+
+
+===========================================Remove the new line \n from base64 encoded strings===========================================
+
+Instead of encodestring consider using b64encode. Later does not add \n characters. e.g.
+
+In [11]: auth = b'username@domain.com:passWORD'
+
+In [12]: base64.encodestring(auth)
+Out[12]: b'dXNlcm5hbWVAZG9tYWluLmNvbTpwYXNzV09SRA==\n'
+
+In [13]: base64.b64encode(auth)
+Out[13]: b'dXNlcm5hbWVAZG9tYWluLmNvbTpwYXNzV09SRA=='
+
+It produces identical encoded string except the \n

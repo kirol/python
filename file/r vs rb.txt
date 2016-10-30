@@ -1,0 +1,5 @@
+If you read a text file, you should use r option
+with open("payload.json","r") as file
+
+If you read a binary file, you should use rb option
+with open("payload.json", "rb") as file

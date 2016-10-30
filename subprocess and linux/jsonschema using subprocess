@@ -53,7 +53,7 @@ def smartPayload():
 		proc3Output, proc3Error = proc3.communicate()
 
 def vendorPayload():
-	command1 = """echo $(cat payload.json) | sed -r 's/(.*)VendorData(.*)VendorId(.*)/\2/' | sed -r 's/(.*)"Data" : "(.*)" (.*)/\2/' | sed 's/\\n//g' > ifhmTmp | echo $(cat abc) | base64 -d | gunzip > ifhmVendor; diff ifhmVendor hddVendorData.ifhm"""
+	command1 = """echo $(cat payload.json) | sed -r 's/(.*)VendorData(.*)VendorId(.*)/\2/' | sed -r 's/(.*)"Data" : "(.*)" (.*)/\2/' | sed 's/\\n//g' > ifhmTmp | echo $(cat ifhmTmp) | base64 -d | gunzip > ifhmVendor; diff ifhmVendor hddVendorData.ifhm"""
 	proc1 = subprocess.Popen(command1,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 	proc1Output, proc1Error = proc1.communicate()
 	if proc1.returncode != 0:

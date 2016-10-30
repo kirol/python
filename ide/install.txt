@@ -1,0 +1,6 @@
+http://www.wingware.com/downloads/wingide-101
+Download tar installer
+Extract then run wing-install.py
+
+Done installing.  Make sure that /usr/local/bin is in your path and type
+     "wing-101-5.1" to start Wing IDE 101.
