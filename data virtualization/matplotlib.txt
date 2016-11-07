@@ -1,0 +1,18 @@
+=================Troubleshooting============= 
+
+Issue 1:
+pip install matplotlib results in below error:
+The following required packages can not be built: freetype, png
+
+Gcc error: gcc: error trying to exec 'cc1': execvp: No such file or directory
+
+no module named tkinter
+
+Resolution 1:
+yum install freetype-devel
+yum install libpng-devel
+
+yum install gcc-c++
+
+yum install tk-devel tkinter
+

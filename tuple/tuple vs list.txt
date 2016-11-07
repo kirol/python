@@ -1,0 +1,15 @@
+I'll talk a little about how python memory works...
+
+Since tuples are immutable, this means that tuples are fixed. We can't do anything to them in memory.
+
+Lists however have this method called append. In order for most of your appends to be fast, python will actually create a larger array in memory just in case you append. 
+
+This way, when you do append, It does not have to recreate a list every time. This also means that if you just need to pass around 3 elements. Making a list of 3 will cost more than 3 elements worth of memory. (How would it know that you don't want to maybe add a 4th 5th 6th element? Its gotta play it safe and assume you might want more!)
+
+On the other hand, by using tuples, it tells python that you want an immutable structure. Give me space for 3 things, fill those slots up, and move on.
+
+--
+
+td;lr  Tuples are more explicit with memory, while lists require overhead. 
+
+If I know that I don't need to use list methods, I won't use a list.
