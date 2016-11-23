@@ -1,0 +1,37 @@
+What is the pythonic way of watching the tail end of a growing file for the occurrence of certain keywords?
+
+In shell I might say:
+
+tail -f "$file" | grep "$string" | while read hit; do
+    #stuff
+done
+
+
+
+
+
+Well, the simplest way would be to constantly read from the file, check what's new and test for hits.
+
+import time
+
+def watch(fn, words):
+    fp = open(fn, 'r')
+    while True:
+        new = fp.readline()
+        # Once all lines are read this just returns ''
+        # until the file changes and a new line appears
+
+        if new:
+            for word in words:
+                if word in new:
+                    yield (word, new)
+        else:
+            time.sleep(0.5)
+
+fn = 'test.py'
+words = ['word']
+for hit_word, hit_sentence in watch(fn, words):
+    print "Found %r in line: %r" % (hit_word, hit_sentence)
+This solution with readline works if you know your data will appear in lines.
+
+If the data is some sort of stream you need a buffer, larger than the largest word you're looking for, and fill it first. It gets a bit more complicated that way...
