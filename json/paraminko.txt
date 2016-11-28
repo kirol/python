@@ -1,1 +1,2 @@
 https://www.mariusv.com/remote-log-access-via-ssh-with-python-using-paramiko-module
+http://jessenoller.com/blog/2009/02/05/ssh-programming-with-paramiko-completely-different
