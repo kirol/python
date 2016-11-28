@@ -1,0 +1,7 @@
+Error when trying to install paramiko using pip install paramiko command:
+Command "/usr/bin/python -c "import setuptools, tokenize;__file__='/tmp/pip-build-GrTNQ9/cffi/setup.py';exec(compile(getattr(tokenize, 'open', open)(__file__).read().replace('\r\n', '\n'), __file__, 'exec'))" install --record /tmp/pip-k9gmSf-record/install-record.txt --single-version-externally-managed --compile" failed with error code 1 in /tmp/pip-build-GrTNQ9/cffi
+
+Resolution:
+yum install python-devel
+yum install libffi-devel
+yum install openssl-devel
