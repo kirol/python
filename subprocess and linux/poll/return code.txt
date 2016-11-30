@@ -1,0 +1,3 @@
+The poll() method will return None if the process is still running at the time poll() is called
+
+If the program is terminated, it will return the process's integer exit code. An exit code is used to indicate whether the process terminated without error (an exit code of 0) or whether an error caused the process to termiate (a nonzero exit code - generally 1, but it may vary depending on the program)
