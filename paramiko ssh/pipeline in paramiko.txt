@@ -1,0 +1,8 @@
+http://stackoverflow.com/questions/4592020/piped-commands-in-paramiko
+
+Because grep doesn't know how to handle |. Get ready for some nasty escaping:
+
+statement = """sh -c 'grep thing file | grep thing2 | tail -1'"""
+This creates a shell on the other side, and asks it to interpret the string grep thing file | grep thing2 | tail -1. The single quotes are necessary since sh -c accepts only a single argument.
+
+That way, a shell will create the pipe for you, running all the commands. And you better be sure that the filename file doesn't contain spaces. If it does, try "file".
