@@ -10,65 +10,72 @@ import sys
 
 from mylog import *
 
-# Excute local cmd on local pc. This function supports pipeline
 def localcmd(data):
-        proc = subprocess.Popen(data, shell=True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        procOutput, procError = proc.communicate()
+# Excute local cmd on local pc. This function supports pipeline
+	proc = subprocess.Popen(data, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	procOutput, procError = proc.communicate()
 	if procOutput:
-        	mylog(procOutput).info()
+		mylog(procOutput).info()
 	if procError:
 		mylog(procError).error()
 	return procOutput, procError
 
+def remotecmd(ip, passwd, data):
 # Execute remote cmd on remote pc. This function supports pipeline
-def remotecmd(ip,passwd,data):
 	ssh = paramiko.SSHClient()
 	ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-	ssh.connect(ip,username='root',password=passwd)
-	stdin, stdout, stderr = ssh.exec_command(data)
+	ssh.connect(ip, username='root', password=passwd)
+	stdout, stderr = ssh.exec_command(data)
 	mylog(data).info()
 	procOutput = stdout.readline()
 	procError = stderr.readlines()
+	if procOutput:
+		mylog(procOutput).info()
 	if procError:
 		for line in procError:
 			mylog(line).error()
 	ssh.close()
 	return procOutput
 
+
+def download(ip, passwd, src, dest):
 # Download file from STB to Linux
-def download(ip,passwd,src,dest):
 	ssh = paramiko.SSHClient()
 	ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-     	ssh.connect(ip,username='root',password=passwd)
+	ssh.connect(ip, username='root', password=passwd)
 	
-	mylog('Download %s from %s to %s' %(src,ip,dest)).info()	
+	mylog('Download %s from %s to %s' % (src, ip, dest)).info()	
 	with scp.SCPClient(ssh.get_transport()) as transfer:
 		try:
-			transfer.get(src,dest)
+			transfer.get(src, dest)
 		except Exception, e:
 			print e
-			
 	ssh.close()
 
+def upload(ip, passwd, src):
 # Upload file from Linux to STB
-def upload(ip,passwd,src):
 	ssh = paramiko.SSHClient()
 	ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-     	ssh.connect(ip,username='root',password=passwd)
+	ssh.connect(ip, username='root', password=passwd)
 	
-	mylog('Upload %s' %(src)).info()	
+	mylog('Upload %s' % (src)).info()	
 	with scp.SCPClient(ssh.get_transport()) as transfer:
-		transfer.put(src,'/var/viewer/')
+		try:
+			transfer.put(src, '/var/viewer/')
+		except Exception, e:
+			print e
 	ssh.close()
 
-def tailcmd(ip,password):
+def tailcmd(ip, password):
+# Poll STB's log
 	tmp = tmpdir()
-	proc  = subprocess.Popen('sshpass -p "%s" ssh -o StrictHostKeyChecking=no root@%s "tail -F /var/viewer/messages.log"' %(password, ip), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	proc = subprocess.Popen('sshpass -p "%s" ssh -o StrictHostKeyChecking=no root@%s "tail -F /var/viewer/messages.log"' % (password, ip), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 	while True:
 		proc.poll()
 		procOutput = proc.stdout.readline()
-
-		if procOutput == '':        
+		
+		# If tail output is empty, poll it again. If tail output is not empty, check output for maintenance task.
+		if procOutput == '':		
 			continue
 		else:
 			if 'DiskMaintenance' in procOutput and 'start running' in procOutput:
@@ -91,31 +98,31 @@ def tailcmd(ip,password):
 				time.sleep(60)
 				download(ip, password, '/var/bob/payloads/hddhealthmonitoring/payload.json', tmp)
 				break
+			
 			elif 'GenieMaintenanceTask' in procOutput and 'start running' in procOutput:
 				print('HddHealthMaintenanceTask did not run')
 				break
 			elif 'start running' in procOutput:
-				remotecmd(ip,password,'echo "keycode 670" > /var/viewer/keyc.tmp; dt keyPress -f /var/viewer/keyc.tmp')	
-				print('start running')
+				remotecmd(ip, password, 'echo "keycode 670" > /var/viewer/keyc.tmp; dt keyPress -f /var/viewer/keyc.tmp')
 	
 	proc.kill()	
 	return tmp
 
-# Create tmp directory using current timestamp
 def tmpdir():
+# Create tmp directory using current timestamp
 	mydir = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
 	os.makedirs(mydir)
-	dir = mydir + '/'
-	return dir
+	tmp = mydir + '/'
+	return tmp
 
+def model(ip, password, tmp):
 # Get disk model
-def model(ip,password,tmp):
-	Seagate = ['1CT162','1ET162']
-	Western = ['63C57Y0','63UY4Y0']	
+	Seagate = ['1CT162', '1ET162']
+	Western = ['63C57Y0', '63UY4Y0']	
 	download(ip, password, '/var/viewer/hdbmSMART.dat', tmp)
 
-	with open(tmp + 'hdbmSMART.dat') as file:
-		 content = file.readlines()
+	with open(tmp + 'hdbmSMART.dat') as txtFile:
+		content = txtFile.readlines()
 	for line in content:
 		if 'Model ID' in line:
 			col1, col2 = line.split('-')
@@ -131,6 +138,7 @@ def model(ip,password,tmp):
 		sys.exit()
 	return diskModel
 
-def hddNextSendFile(nextSmartTime,nextVendorTime):
+def hddNextSendFile(nextSmartTime, nextVendorTime):
+# Create hddNextSend.dat file on local 
 	with open('hddNextSend.dat', 'w') as f:
-		f.write('nextVendor=%s\nnextSmart=%s' %(nextVendorTime,nextSmartTime)) 
+		f.write('nextVendor=%s\nnextSmart=%s' % (nextVendorTime, nextSmartTime)) 

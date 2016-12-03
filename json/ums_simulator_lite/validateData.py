@@ -6,46 +6,46 @@ import base64
 from myprocess import *
 
 def readPayloadJson(tmp, txtStr):
-        #Load data to payloadContent dictionary
-        with open(tmp + 'payload.json') as f:
-                payloadContent = simplejson.loads(f.read())
+		#Load data to payloadContent dictionary
+		with open(tmp + 'payload.json') as f:
+				payloadContent = simplejson.loads(f.read())
 
-        #Load data to list
-                payloadData = payloadContent.get(txtStr)
-        return payloadData
+		#Load data to list
+				payloadData = payloadContent.get(txtStr)
+		return payloadData
 
 # Decode base64 then gunzip
 def convertFile(data):
-        decoded = zlib.decompress(base64.decodestring(data),zlib.MAX_WBITS|32)
-        return decoded
+		decoded = zlib.decompress(base64.decodestring(data),zlib.MAX_WBITS|32)
+		return decoded
 
 # Compare SmartData against payload.json
 def smartPayload(tmp):
-        #Load data from payload.json to payloadSmart list
-        payloadSmart = readPayloadJson(tmp, "SmartData")
+		#Load data from payload.json to payloadSmart list
+		payloadSmart = readPayloadJson(tmp, "SmartData")
 
-        payloadDict = {}
-        for i in range(len(payloadSmart)):
-                payloadDict[str(payloadSmart[i].get('id'))] = payloadSmart[i].get('value')
+		payloadDict = {}
+		for i in range(len(payloadSmart)):
+				payloadDict[str(payloadSmart[i].get('id'))] = payloadSmart[i].get('value')
 	
 	# Read data from smart.dat
-        smartDict = {}
-        with open(tmp + 'smart.dat') as file2:
-                for line in file2:
-                        k,v = line.strip().split('=')
-                        smartDict[k] = v
-        if payloadDict == smartDict:
-                print('PASSED')
-        else:
-                print('FAILED')
+		smartDict = {}
+		with open(tmp + 'smart.dat') as file2:
+				for line in file2:
+						k,v = line.strip().split('=')
+						smartDict[k] = v
+		if payloadDict == smartDict:
+				print('PASSED')
+		else:
+				print('FAILED')
 
 # Compare VendorData against payload.json
 def vendorPayload(ip, password, tmp):
-        #Load data to payloadVendor list
-        payloadVendor = readPayloadJson(tmp, "VendorData")
-        payloadDict = {}
-        for i in range(len(payloadVendor)):
-                payloadDict[payloadVendor[i].get('VendorId')] = payloadVendor[i].get('Data')
+	#Load data to payloadVendor list
+	payloadVendor = readPayloadJson(tmp, "VendorData")
+	payloadDict = {}
+	for i in range(len(payloadVendor)):
+		payloadDict[payloadVendor[i].get('VendorId')] = payloadVendor[i].get('Data')
 
 	disk_model = model(ip, password, tmp)
 	if disk_model == 'WD':
@@ -87,5 +87,4 @@ def vendorPayload(ip, password, tmp):
 			print("UDS: PASSED")
 		else:
 			print("UDS: FAILED")
-
 
