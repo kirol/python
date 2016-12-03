@@ -1,0 +1,79 @@
+================== Header ==================
+Log Version 4
+
+============= Disk Information =============
+Manufacturer: Seagate
+Model ID:     ST1000VM002-1CT162
+Model name:   Bogart Pipeline (Pipeline HD 3Gb/s) 1TB
+Serial:       S1G0Q8PA
+Firmware:     SC23
+Capacity      1000204886016 bytes
+Total Sectors 1953525168
+   Physical Sector Size : 4096
+   Logical Sector Size  : 512
+
+LBA Offsets (for pending defect log) :
+  0x00000 
+
+Features: 
+   UDMA/133              : Selected
+   Idle Immediate (IIwU) : NOT Supported
+   PUIS enabled          : NO
+   SCT supported         : Yes
+
+Smart Status:
+   S.M.A.R.T                            : Enabled
+   Self Test (From IDENTIFY)            : Supported
+   Self Test (From SMART Capabilities)  : Supported
+   Selective Self Test                  : Supported
+   Conveyance Self Test                 : Supported
+   Offline Read Scanning                : Not Supported
+   Execute Immediate Offline Command    : Supported
+
+=========================== HDD Scan Progress ==========================
+Last Scan Completed : 1447430415 (2015-11-13 16:00:15 (GMT))
+Current Scan LBA: 0
+
+=============================================== S.M.A.R.T Attributes ==========================================
+|--ID-|----------------Name-----------------|-Value-|-Worst-|-Thresh-|-OK?-|--------Raw------|-Raw Byte Array-|
+|   1 | Raw Error Rate                      |  117  |   99  |     6  | Yes |       139175840 | 0xA0A74B080000 |
+|   3 | Spin Up Time                        |   98  |   97  |     0  | Yes |               0 | 0x000000000000 |
+|   4 | Start/Stop Count                    |   98  |   98  |    20  | Yes |            2283 | 0xEB0800000000 |
+|   5 | Reallocated Sectors Count           |  100  |  100  |    36  | Yes |               0 | 0x000000000000 |
+|   7 | Seek Error Rate                     |   79  |   60  |    30  | Yes |        96381543 | 0x67AABE050000 |
+|   9 | Power-on-hours                      |   94  |   94  |     0  | Yes |            5434 | 0x3A1500000000 |
+|  10 | Spin Retry Count                    |  100  |  100  |    97  | Yes |               0 | 0x000000000000 |
+|  12 | Drive Power Cycle Count             |   98  |   98  |    20  | Yes |            2288 | 0xF00800000000 |
+| 184 | End-to-End error                    |  100  |  100  |    99  | Yes |               0 | 0x000000000000 |
+| 187 | Reported Uncorrectable Errors       |  100  |  100  |     0  | Yes |               0 | 0x000000000000 |
+| 188 | Command Timeout                     |  100  |  100  |     0  | Yes |               0 | 0x000000000000 |
+| 189 | High Fly Writes                     |    7  |    7  |     0  | Yes |              93 | 0x5D0000000000 |
+| 191 | G-sense error rate                  |  100  |  100  |     0  | Yes |               0 | 0x000000000000 |
+| 192 | Power-off Retract Count             |  100  |  100  |     0  | Yes |             987 | 0xDB0300000000 |
+| 193 | Load Cycle Count                    |   99  |   99  |     0  | Yes |            2283 | 0xEB0800000000 |
+| 194 | Temperature                         |   27  |   51  |     0  | Yes |     77309411355 | 0x1B0000001200 |
+| 197 | Current Pending Sector Count        |  100  |  100  |     0  | Yes |               0 | 0x000000000000 |
+| 198 | Uncorrectable Sector Count          |  100  |  100  |     0  | Yes |               0 | 0x000000000000 |
+| 199 | UltraDMA CRC Error Count            |  200  |  200  |     0  | Yes |               3 | 0x030000000000 |
+|-----|-------------------------------------|-------|-------|--------|-----|-----------------|----------------|
+
+=========================== Attribute Change Log (Only Some Attributes Monitored) ==========================
+Total Attribute Changes : 0
+Last  0 Attribute Changes :
+|---------- Date -----------|------------------- Name ------------|--ID-|- New Raw Value -|-Raw Byte Array-|
+|---------------------------|-------------------------------------|-----|-----------------|----------------|
+
+============================= S.M.A.R.T Test Results ============================
+Total Successful Scans: 1
+Total Failed Scans    : 0
+Last  1 Scan Results  :
+|---------- Date -----------|-------- Status --------|- %Complete -|---- LBA ---|
+| 2015-11-13 16:00:15 (GMT) |      Completed OK ( 0) |     100%    |          0 |
+|---------------------------|------------------------|-------------|------------|
+
+========================== LBA Read Failures =========================
+Total LBA Errors   : 0
+Last  0 LBA Errors :
+|---------- Date -----------|- Start LBA -|-- End LBA --|--  Count --|
+|---------------------------|-------------|-------------|------------|
+

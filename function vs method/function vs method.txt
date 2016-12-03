@@ -1,0 +1,1 @@
+Classes often have methods, which are functions that are associated with a particular class, and do things associated with the thing that the class is - but if all you want is to do something, a function is all you need.
