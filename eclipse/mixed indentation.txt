@@ -1,0 +1,2 @@
+Issue: Mixed Indentation warning displays
+Ctrl + A -> Source -> Convert space-tabs to tabs

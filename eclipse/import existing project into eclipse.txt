@@ -1,0 +1,2 @@
+Install java 1.8, eclipse, pydex
+File > New > Other > PyDev Project > Browse to source folder > Configure interpreter - auto

@@ -1,0 +1,4 @@
+How to enable pep8:
+	Preferences > PyDex > Code Analysis > pep8.py > Select warning
+	
+	We shouldn't enable pep8 though
