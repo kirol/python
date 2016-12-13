@@ -1,0 +1,7 @@
+As soon as we execute a return, we'll leave the function
+
+
+
+Python break statement
+The break statement terminates the loop containing it. Control of the program flows to the statement immediately after the body of the loop.
+If break statement is inside a nested loop (loop inside another loop), break will terminate the innermost loop.
