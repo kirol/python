@@ -1,0 +1,2 @@
+Error: numpy 1.6 or later is required
+pip uninstall numpy. Then running pip install numpy
