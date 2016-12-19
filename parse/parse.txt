@@ -1,0 +1,3 @@
+Parse
+Provide some structure for the data's meaning, and order it into categories.
+The amount of Data one can collect and analyze is immense. It is necessary to put the data you collect it into a structure. This structure will make it easier to know convey to others what data you have by format, tags, names, and indices.
