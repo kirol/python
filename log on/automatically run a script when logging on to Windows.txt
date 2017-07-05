@@ -1,3 +1,6 @@
+
+python umshttpd.py 2>&1 | tee -a umslogs.txt &
+
 You can create a scheduled task that will run when your computer is unlocked:
 
     Start > Administrative Tools > Task Scheduler
