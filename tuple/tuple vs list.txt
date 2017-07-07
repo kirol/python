@@ -13,3 +13,10 @@ On the other hand, by using tuples, it tells python that you want an immutable s
 td;lr  Tuples are more explicit with memory, while lists require overhead. 
 
 If I know that I don't need to use list methods, I won't use a list.
+
+
+Creating a tuple is as simple as putting different comma-separated values. Optionally you can put these comma-separated values between parentheses also. For example -
+
+tup1 = ('physics', 'chemistry', 1997, 2000);
+tup2 = (1, 2, 3, 4, 5 );
+tup3 = "a", "b", "c", "d";
