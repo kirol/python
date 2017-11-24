@@ -1,0 +1,10 @@
+In windows, we can install both python 2 and python 3
+To install package using pip2, we browse to python 2 's installed folder . e.g: D:\Software\Python27\Scripts\pip2.7.exe then run using windows command line
+pip2.7.exe install openpyxl
+
+To show the location of installed package, we use below command:
+pip2.7 exe show openpyxl
+
+Location: d:\software\python27\lib\site-packages
+
+Then we add this location to eclipse > right click a project then select Properties > PyDev - PYTHONPATH > External Libraries > Add Source Folder > d:\software\python27\lib\site-packages
