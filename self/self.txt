@@ -1,0 +1,15 @@
+class TestAnonymousSurvey(unittest.TestCase):
+	def setUp(self):
+		self.responses = ['English','Spanish','Mandarin']
+		
+		
+	def test_store_single_response(self):
+		self.my_survey.store_response(self.responses[0])
+	
+	
+	
+
+Line 3 is prefixed by self, so they can be used anywhere in the class.
+
+The prefix self
+		Any variable prefixed with self is available to every method in the class, and we'll also be able to access these variables through any instance created from the class.
