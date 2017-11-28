@@ -1,0 +1,4 @@
+@unittest.skip("This is a skipped test.")
+        def test_skip(self):
+            """ This test should be skipped. """
+            pass
