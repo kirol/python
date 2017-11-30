@@ -1,0 +1,3 @@
+In case you can not import using option Existing Projects into Workspace:
+	- First create a new PyDev Project
+	- Second select the created project then import File System > Select the folder > Check all

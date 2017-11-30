@@ -1,3 +1,6 @@
+Note for C++/Java/C# Programmers
+The self in Python is equivalent to the this pointer in C++ and the this reference in Java and C#.
+
 class TestAnonymousSurvey(unittest.TestCase):
 	def setUp(self):
 		self.responses = ['English','Spanish','Mandarin']

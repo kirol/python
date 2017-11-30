@@ -1,7 +1,14 @@
 1. A linux PC (I am using Cent OS 7.2)
 2. Python 2.7 (latest version, 2.7.5 or 2.7.12, depended on your CentOS) installed
-3. PIP for python installed, then install the external module, requests, paramiko, xmltodict, openpyxl
+3. PIP for python installed, then install the external module, requests, paramiko, xmltodict, openpyxl, web.py
+yum install python-cryptography
+rpm -i python-paramiko-2.1.1-2.el7.noarch.rpm 
+yum install sshpass
 4. Java JDK 1.8 installed, then install Eclipse with PyDev plugin
 5. Configure Python interpreter for Eclipse, and make sure that you can create a simple Python project with Eclipse (make a Hello World project and make sure it can compiled and run successfully).
+6. Turn off firewall on Linux pc
+service firewalld stop
 
 Once your Linux development PC is ready, please get a HR54 HUM, we will use a special build made by EMB (if you could not find HR54 HUM, I will need to ask EMB team to make a special build for you). Make sure that your development PC and your STB is the same network (from this PC you can do SSH to the box or executing SHEF command to the box).
+
+Note: you also need to install paramiko on linux using yum install paramiko after installing pip install paramiko for paramiko to work
