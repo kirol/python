@@ -1,0 +1,22 @@
+Putting *args and/or **kwargs as the last items in your function definition’s argument list allows that function to accept an arbitrary number of arguments and/or keyword arguments.
+
+For example, if you wanted to write a function that returned the sum of all its arguments, no matter how many you supply, you could write it like this:
+
+def my_sum(*args):
+    return sum(args)
+It’s probably more commonly used in object-oriented programming, when you’re overriding a function, and want to call the original function with whatever arguments the user passes in.
+
+You don’t actually have to call them args and kwargs, that’s just a convention. It’s the * and ** that do the magic.
+
+
+kwargs is keyword arguments
+
+def parrot(voltage, state='a stiff', action='voom', type='Norwegian Blue'):
+    print "-- This parrot wouldn't", action,
+    print "if you put", voltage, "volts through it."
+    print "-- Lovely plumage, the", type
+    print "-- It's", state, "!"
+	
+	
+voltage is argument
+state is keyword argument

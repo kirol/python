@@ -1,0 +1,11 @@
+The method named __call__ is (according to the documentation)
+
+Called when the instance is ''called'' as a function
+Example
+
+class Foo:
+  def __call__(self):
+    print 'called'
+
+foo_instance = Foo()
+foo_instance() #this is calling the __call__ method

@@ -18,3 +18,8 @@ def main(sysArgs):
 				
 				
 proc.communicate() includes both stdout=subprocess.PIPE,stderr=subprocess.PIPE
+
+
+Note:
+To display output to terminal, please use command: 
+proc = subprocess.Popen(['sshpass -p gcsvn123 scp minhql@192.168.100.102:' + input + ' .'] ,shell=True)

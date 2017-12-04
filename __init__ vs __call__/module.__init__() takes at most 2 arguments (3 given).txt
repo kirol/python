@@ -1,0 +1,5 @@
+It means unittest.result is a module not a class
+class customTestResult(unittest.result)
+
+This is the correct one
+class customTestResult(unittest.TestResult)
