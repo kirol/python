@@ -1,0 +1,37 @@
+3.2.2. Adding Elements to Lists
+Example 3.10. Adding Elements to a List
+>>> li
+['a', 'b', 'mpilgrim', 'z', 'example']
+>>> li.append("new")               1
+>>> li
+['a', 'b', 'mpilgrim', 'z', 'example', 'new']
+>>> li.insert(2, "new")            2
+>>> li
+['a', 'b', 'new', 'mpilgrim', 'z', 'example', 'new']
+>>> li.extend(["two", "elements"]) 3
+>>> li
+['a', 'b', 'new', 'mpilgrim', 'z', 'example', 'new', 'two', 'elements']
+1	append adds a single element to the end of the list.
+2	insert inserts a single element into a list. The numeric argument is the index of the first element that gets bumped out of position. Note that list elements do not need to be unique; there are now two separate elements with the value 'new', li[2] and li[6].
+3	extend concatenates lists. Note that you do not call extend with multiple arguments; you call it with one argument, a list. In this case, that list has two elements.
+Example 3.11. The Difference between extend and append
+>>> li = ['a', 'b', 'c']
+>>> li.extend(['d', 'e', 'f']) 1
+>>> li
+['a', 'b', 'c', 'd', 'e', 'f']
+>>> len(li)                    2
+6
+>>> li[-1]
+'f'
+>>> li = ['a', 'b', 'c']
+>>> li.append(['d', 'e', 'f']) 3
+>>> li
+['a', 'b', 'c', ['d', 'e', 'f']]
+>>> len(li)                    4
+4
+>>> li[-1]
+['d', 'e', 'f']
+1	Lists have two methods, extend and append, that look like they do the same thing, but are in fact completely different. extend takes a single argument, which is always a list, and adds each of the elements of that list to the original list.
+2	Here you started with a list of three elements ('a', 'b', and 'c'), and you extended the list with a list of another three elements ('d', 'e', and 'f'), so you now have a list of six elements.
+3	On the other hand, append takes one argument, which can be any data type, and simply adds it to the end of the list. Here, you're calling the append method with a single argument, which is a list of three elements.
+4	Now the original list, which started as a list of three elements, contains four elements. Why four? Because the last element that you just appended is itself a list. Lists can contain any type of data, including other lists. That may be what you want, or maybe not. Don't use append if you mean extend.

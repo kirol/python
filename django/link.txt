@@ -1,1 +1,2 @@
+https://scotch.io/tutorials/build-your-first-python-and-django-application
 https://tutorial.djangogirls.org/en/

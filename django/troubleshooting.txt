@@ -1,3 +1,18 @@
+===========================================================================================================================================================================
+egg_info error
+
+This error occurs because python 's version is 2.7 (python 2.7 is not compatible with Django 's latest version) so you need to install Django 1.11 instead of lastest version
+pip install Django==1.11
+
+
+
+
+
+
+
+
+
+===========================================================================================================================================================================
 django.core.exceptions.ImproperlyConfigured: Error loading either pysqlite2 or sqlite3 modules (tried in that order): No module named '_sqlite3'
 
 => You need to install below packages:

@@ -1,0 +1,7 @@
+Currently, you can only stop the tests at the suite level. Once you are in a TestCase, the stop() method for the TestResult is not used when iterating through the tests.
+
+Somewhat related to your question, if you are using python 2.7, you can use the -f/--failfast flag when calling your test with python -m unittest. This will stop the test at the first failure.
+
+See 25.3.2.1. failfast, catch and buffer command line options
+
+You can also consider using Nose to run your tests and use the -x, --stop flag to stop the test early.

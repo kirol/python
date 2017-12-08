@@ -1,0 +1,22 @@
+In javascript, we can look through the properties of an object:
+var txt = "";
+var person = {fname:"John", lname:"Doe", age:25}; 
+txt = person.fname;
+
+
+In python
+>>> import odbchelper                              1
+>>> params = {"server":"mpilgrim", "database":"master", "uid":"sa", "pwd":"secret"}
+>>> print odbchelper.buildConnectionString(params) 2
+server=mpilgrim;uid=sa;database=master;pwd=secret
+>>> print odbchelper.buildConnectionString.__doc__ 3
+Build a connection string from a dictionary
+
+
+1	The first line imports the odbchelper program as a module -- a chunk of code that you can use interactively, or from a larger Python program. (You'll see examples of multi-module Python programs in Chapter 4.) Once you import a module, you can reference any of its public functions, classes, or attributes. Modules can do this to access functionality in other modules, and you can do it in the IDE too. This is an important concept, and you'll talk more about it later.
+2	When you want to use functions defined in imported modules, you need to include the module name. So you can't just say buildConnectionString; it must be odbchelper.buildConnectionString. If you've used classes in Java, this should feel vaguely familiar.
+3	Instead of calling the function as you would expect to, you asked for one of the function's attributes, __doc__.
+
+Everything in Python is an object, and almost everything has attributes and methods. All functions have a built-in attribute __doc__, which returns the doc string defined in the function's source code. The sys module is an object which has (among other things) an attribute called path. And so forth.
+
+This is so important that I'm going to repeat it in case you missed it the first few times: everything in Python is an object. Strings are objects. Lists are objects. Functions are objects. Even modules are objects.

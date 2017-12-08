@@ -1,0 +1,7 @@
+Python has functions like most other languages, but it does not have separate header files like C++ or interface/implementation sections like Pascal. When you need a function, just declare it, like this:
+
+
+def buildConnectionString(params):
+Note that the keyword def starts the function declaration, followed by the function name, followed by the arguments in parentheses. Multiple arguments (not shown here) are separated with commas.
+
+Also note that the function doesn't define a return datatype. Python functions do not specify the datatype of their return value; they don't even specify whether or not they return a value. In fact, every Python function returns a value; if the function ever executes a return statement, it will return that value, otherwise it will return None, the Python null value.
