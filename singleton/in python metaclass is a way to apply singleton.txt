@@ -1,0 +1,1 @@
+In singleton, every objects of one class are the same 

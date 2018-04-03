@@ -1,0 +1,9 @@
+The difference is that inheriting from a class does not affect how the class is created, it only affects how instances of the class are created. If you do:
+
+class A(object):
+    # stuff
+
+class B(A):
+    # stuff
+
+Class B inherits from Class A, then A does not have any opportunity to "hook in" when B is created. Methods of A may be called when an instance of B is created, but not when the class B itself is created.
