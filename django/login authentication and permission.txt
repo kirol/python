@@ -1,0 +1,194 @@
+What's change?
+
+
+
+from django.contrib.auth.models import User
+user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
+
+
+Add the following to the bottom of the project urls.py file (locallibrary/locallibrary/urls.py) file:
+
+from django.conf.urls import url, include
+
+
+url('accounts/', include('django.contrib.auth.urls')),
+
+Create base_generic.html in templates folder
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% block title %}<title>Local Library</title>{% endblock %}
+</head>
+
+<body>
+  {% block sidebar %}<!-- insert default navigation text for every page -->{% endblock %}
+  {% block content %}<!-- default content text (typically empty) -->{% endblock %}
+</body>
+</html>
+
+Add login.html to this folder
+C:\Users\isadmin\Desktop\AUTOBOT\autobot_tfw\autobot\templates\registration
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+{% if form.errors %}
+<p>Your username and password didn't match. Please try again.</p>
+{% endif %}
+
+{% if next %}
+    {% if user.is_authenticated %}
+    <p>Your account doesn't have access to this page. To proceed,
+    please login with an account that has access.</p>
+    {% else %}
+    <p>Please login to see this page.</p>
+    {% endif %}
+{% endif %}
+
+<form method="post" action="{% url 'login' %}">
+{% csrf_token %}
+
+<div>
+  <td>{{ form.username.label_tag }}</td>
+  <td>{{ form.username }}</td>
+</div>
+<div>
+  <td>{{ form.password.label_tag }}</td>
+  <td>{{ form.password }}</td>
+</div>
+
+<div>
+  <input type="submit" value="login" />
+  <input type="hidden" name="next" value="{{ next }}" />
+</div>
+</form>
+
+{# Assumes you setup the password_reset view in your URLconf #}
+<p><a href="{% url 'password_reset' %}">Lost password?</a></p>
+
+{% endblock %}
+
+
+
+Add below text to settings.py in TestManager folder
+# Redirect to home URL after login (Default redirects to /accounts/profile/)
+LOGIN_REDIRECT_URL = '/' 
+
+
+Add logout page
+Add below text to settings.py in TestManager folder
+# Redirect to home URL after login (Default redirects to /accounts/profile/)
+LOGOUT_REDIRECT_URL = '/' 
+
+
+
+
+
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+
+class ProtectedView(TemplateView):
+    template_name = 'secret.html'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+		
+		
+		
+To use a different authentication methods
+https://docs.djangoproject.com/en/2.0/topics/auth/customizing/
+
+
+Create folder custom_backend in autobot folder
+This folder contains __init__.py, backend.py
+from django.contrib.auth.models import User
+
+class ExternalAuthBackend(object):
+    """
+    
+    """
+    def authenticate(self, request, username=None, password=None):
+        login_valid = ("test" == username)
+        pwd_valid = ("test", "test")
+        if login_valid and pwd_valid:
+            try:
+                user = User.objects.get(username=username)
+            except User.DoesNotExist:
+                # Create a new user. There's no need to set a password
+                # because only the password from settings.py is checked.
+                user = User(username=username)
+                user.is_staff = True
+                user.is_superuser = True
+                user.save()
+            return user
+        return None
+
+    def get_user(self, user_id):
+        try:
+            return User.objects.get(pk=user_id)
+        except User.DoesNotExist:
+            return None
+			
+			
+			
+
+from django.contrib.auth.models import User
+from autobot.handler.TestLinkHandler import clear_previous_session, connect
+from Utils import DatabaseUtils
+
+class ExternalAuthBackend(object):
+    """
+    Custom authentication backend which is used before Django authentication backend
+    """
+    
+    # Create an authentication method
+    # This is called by the standard Django login procedure
+    def authenticate(self, request, username=None, password=None):
+#         login_valid = ("test" == username)
+#         pwd_valid = ("test", "test")
+        logindata_tmp = DatabaseUtils.get_external_account_info(1)
+        testlink_url = logindata_tmp[0]['url']
+        login_data = {"tl_login": username, "tl_password": password}
+        login_success = connect(testlink_url, login_data)
+        if login_success == "success":
+            try:
+                user = User.objects.get(username=username)
+            except User.DoesNotExist:
+                # Create a new user. There's no need to set a password
+                # because only the password from settings.py is checked.
+                user = User(username=username)
+                user.is_staff = True
+                user.is_superuser = True
+                user.save()
+            return user
+        # No user was found in external system, 
+        # return None - triggers default login failed
+        return None
+
+    # Required for your backend to work properly - unchanged in most scenarios
+    def get_user(self, user_id):
+        try:
+            return User.objects.get(pk=user_id)
+        except User.DoesNotExist:
+            return None
+			
+
+In settings.py includes this file
+# The order of AUTHENTICATION_BACKENDS matters, 
+# so if the same username and password is valid in multiple backends, 
+# Django will stop processing at the first positive match.
+# Default AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
+AUTHENTICATION_BACKENDS = ['autobot.custom_backend.backend.ExternalAuthBackend']
+
+
+# In settings.py
+When setting DEBUG = False => Open website results in 404 error
+Because by default, If you use django.contrib.staticfiles as explained above, runserver will do serving static files during development¶
+ automatically when DEBUG is set to True. STATIC_URL = '/static/'
+ 
+So if you want to set DEBUG to False in production mode, you need to https://docs.djangoproject.com/en/2.0/howto/static-files/deployment/
+
+
+Also research delpying https in Django and csrf_token
+
