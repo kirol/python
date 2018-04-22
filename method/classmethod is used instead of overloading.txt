@@ -1,3 +1,5 @@
+Since Python does not have overloading, we need to use classmethod instead
+
 Java and Powerbuilder support function overloading by argument list, i.e. one class can have multiple methods with the same name but a different number of arguments, or arguments of different types. Other languages (most notably PL/SQL) even support function overloading by argument name, i.e. one class can have multiple methods with the same name and the same number of arguments of the same type but different argument names. 
 
 Python supports neither of these, it has no form of function overloading whatsoever. Methods are defined solely by their name. So if a descendant class has an __init__ method, it always overrides the ancestor __init__ method, even if the descendant defines it with a different argument list. And the same rule applies to any other method.
